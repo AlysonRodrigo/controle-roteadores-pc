@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Forms\AccessForm;
 use App\Models\RouteAccess;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,11 @@ class AccessController extends Controller
      */
     public function create()
     {
-        //
+        $form = \FormBuilder::create(AccessForm::class,[
+            'url' => route('admin.access.store'),
+            'method' => 'POST'
+        ]);
+        return view('admin.access.create',compact('form'));
     }
 
     /**
@@ -37,7 +42,18 @@ class AccessController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /** @var UserForm $form */
+        $form = \FormBuilder::create(AccessForm::class);
+        if (!$form->isValid()) {
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
+        }
+        $data = $form->getFieldValues();
+        RouteAccess::create($data);
+        $request->session()->flash('message', 'Route access cadastro com sucesso');
+        return redirect()->route('admin.access.index');
     }
 
     /**
@@ -46,9 +62,9 @@ class AccessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(RouteAccess $access)
     {
-        //
+        return view('admin.access.detalhes',compact('access'));
     }
 
     /**
@@ -57,9 +73,15 @@ class AccessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(RouteAccess $access)
     {
-        //
+        $form = \FormBuilder::create(AccessForm::class,[
+            'url' => route('admin.access.update',['id' => $access->id]),
+            'method' => 'PUT',
+            'model' => $access
+        ]);
+
+        return view('admin.access.edit',compact('form'));
     }
 
     /**

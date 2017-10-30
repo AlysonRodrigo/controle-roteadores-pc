@@ -1,16 +1,11 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
-//Auth::routes();
+Route::get('/','Admin\Auth\LoginController@showLoginForm');
 
 $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('admin')->group(function (){
 
@@ -23,10 +18,7 @@ Route::prefix('admin')->group(function (){
         'middleware' => ['auth']
     ], function (){
 
-        Route::get('dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
-
+        Route::resource('users', 'UsersController');
         Route::resource('access', 'AccessController');
         $this->post('logout', 'Auth\LoginController@logout')->name('logout');
 

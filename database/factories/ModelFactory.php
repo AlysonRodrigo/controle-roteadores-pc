@@ -23,6 +23,20 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->state(\App\Models\User::class,'admin', function (Faker\Generator $faker){
+
+    return [
+        'role' => \App\Models\User::ROLE_ADMIN
+    ];
+
+});
+
+$factory->state(\App\Models\User::class, 'manager', function (Faker\Generator $faker) {
+    return [
+        'role' =>  \App\Models\User::ROLE_MANAGER,
+    ];
+});
+
 $factory->define(App\Models\RouteAccess::class, function (Faker\Generator $faker) {
     static $password;
 

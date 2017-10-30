@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        {!! \Button::primary('Cadastrar roteador')->asLinkTo('admin.access.create') !!}
+        {!! \Button::primary('Cadastrar roteador')->asLinkTo(route('admin.access.create')) !!}
         <?php $icon = Icon::create('floppy-disk') ?>
         {!! \Table::withContents($access->items())
                 ->striped()
