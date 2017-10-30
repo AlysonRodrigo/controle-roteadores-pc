@@ -22,3 +22,17 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Models\RouteAccess::class, function (Faker\Generator $faker) {
+    static $password;
+
+    return [
+        'name' => $faker->name,
+        'route_user' => $faker->name,
+        'route_password' => $password ?: $password = bcrypt('secret'),
+        'ppoe_user' => $faker->name,
+        'ppoe_password' => $password ?: $password = bcrypt('secret'),
+        'wifi_user' => $faker->name,
+        'wifi_password' => $password ?: $password = bcrypt('secret'),
+    ];
+});
