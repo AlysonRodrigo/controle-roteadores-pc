@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
                 <div class="col-md-12">
-                    <h3>Editar usuário</h3>
+                    <h3>Editar Route Access</h3>
                     {!!
                     form($form->add('edit','submit',[
                        'attr' => ['class' => 'btn btn-primary btn-block'],

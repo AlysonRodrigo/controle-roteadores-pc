@@ -59,7 +59,7 @@ class AccessController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Models/RouteAccess $routeAccess
      * @return \Illuminate\Http\Response
      */
     public function show(RouteAccess $access)
@@ -70,7 +70,7 @@ class AccessController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Models/RouteAccess $routeAccess
      * @return \Illuminate\Http\Response
      */
     public function edit(RouteAccess $access)
@@ -88,22 +88,38 @@ class AccessController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Models/RouteAccess $routeAccess
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RouteAccess $routeAccess)
     {
-        //
+        $form = \FormBuilder::create(AccessForm::class);
+
+
+        if (!$form->isValid()) {
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
+        }
+
+
+        $data = $form->getFieldValues();
+        $routeAccess->fill($data);
+        $routeAccess->save();
+        $request->session()->flash('message', 'Estrutura de rede alterada com sucesso');
+        return redirect()->route('admin.access.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Models/RouteAccess $routeAccess
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(RouteAccess $routeAccess)
     {
-        //
+        $routeAccess->delete();
+        return redirect()->route('admin.access.index');
     }
 }
